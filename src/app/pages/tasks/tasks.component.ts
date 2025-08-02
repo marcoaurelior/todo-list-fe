@@ -1,11 +1,12 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {CreateTaskRequest, Task, UpdateTaskRequest} from './tasks.model';
+import {CreateTaskRequest, Task, UpdateAllTasksOrderRequest, UpdateTaskRequest} from './tasks.model';
 import {TasksService} from './tasks.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule, NgForm} from '@angular/forms';
 import {BsModalRef, BsModalService, ModalModule} from 'ngx-bootstrap/modal';
 import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
 import swal from 'sweetalert2';
+import {CdkDrag, CdkDragDrop, CdkDragPreview, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-list-tasks',
@@ -14,7 +15,10 @@ import swal from 'sweetalert2';
     CommonModule,
     ModalModule,
     FormsModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    CdkDropList,
+    CdkDrag,
+    CdkDragPreview
   ],
   providers: [BsModalService, provideNgxMask()],
   templateUrl: './tasks.component.html',
@@ -26,7 +30,7 @@ export class TasksComponent implements OnInit {
     class: 'modal-dialog-centered'
   };
   createModal!: BsModalRef;
-  updateModal!: BsModalRef;
+  editModal!: BsModalRef;
 
   tasks: Task[] = [];
 
@@ -83,11 +87,49 @@ export class TasksComponent implements OnInit {
     this.createModal = this.modalService.show(modalDefault, this.default);
   }
 
+  dragAndDrop(event: CdkDragDrop<Task[]>) {
+    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+    this.updateOrder();
+  }
+
+  updateOrder(): void {
+    const orderedTasks: UpdateAllTasksOrderRequest[] = this.tasks.map((task, index) => ({
+      id: task.id,
+      displayOrder: index
+    }));
+
+    this.tasksService.updateAllDisplayOrder(orderedTasks).subscribe({
+      next: (updatedTasks) => {
+        console.log('Ordem atualizada com sucesso', updatedTasks);
+        this.getAllTasks();
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar ordem', error);
+      }
+    });
+  }
+
+  moveUp(index: number) {
+    if (index > 0) {
+      const temp = this.tasks[index];
+      this.tasks[index] = this.tasks[index - 1];
+      this.tasks[index - 1] = temp;
+    }
+  }
+
+  moveDown(index: number) {
+    if (index < this.tasks.length - 1) {
+      const temp = this.tasks[index];
+      this.tasks[index] = this.tasks[index + 1];
+      this.tasks[index + 1] = temp;
+    }
+  }
+
   updateTask(updateTaskForm: NgForm) {
     const request: UpdateTaskRequest = {
-      name: this.createName,
-      cost: this.createCost,
-      dueDate: this.createDueDate
+      name: this.editName,
+      cost: this.editCost,
+      dueDate: this.editDueDate
     };
 
     this.tasksService.updateTask(this.editId, request).subscribe({
@@ -99,7 +141,7 @@ export class TasksComponent implements OnInit {
       }
     });
 
-    this.createModal.hide();
+    this.editModal.hide();
     updateTaskForm.resetForm();
   }
 
@@ -120,7 +162,7 @@ export class TasksComponent implements OnInit {
   }
 
   openEditModal(modalDefault: TemplateRef<void>) {
-    this.updateModal = this.modalService.show(modalDefault, this.default);
+    this.editModal = this.modalService.show(modalDefault, this.default);
   }
 
   deleteTask(id: string): void {

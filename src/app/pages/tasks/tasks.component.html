@@ -2,30 +2,46 @@
   <div class="card p-4">
     <h1 class="text-center mb-4">Lista de Tarefas</h1>
 
-    <div>
+    <div class="table-container" cdkDropList (cdkDropListDropped)="dragAndDrop($event)">
       <table class="table table-striped table-hover align-items-center">
         <thead class="thead-light">
         <tr>
-          <th scope="col">Nome</th>
-          <th scope="col">Custo</th>
-          <th scope="col">Data Limite</th>
-          <th></th>
+          <th scope="col" style="width: 40%;">Nome</th>
+          <th scope="col" style="width: 20%;">Custo</th>
+          <th scope="col" style="width: 20%;">Data Limite</th>
+          <th scope="col" style="width: 10%;" class="text-left">Mover</th>
+          <th scope="col" style="width: 10%;" class="text-left">Ações</th>
         </tr>
         </thead>
         <tbody class="list">
-          @for (task of tasks; track task.id) {
-            <tr>
+          @for (task of tasks; track task.id; let i = $index) {
+            <tr cdkDrag [cdkDragData]="task" class="drag-item">
+              <ng-template cdkDragPreview>
+                <div class="drag-preview">
+                  {{ task.name }}
+                </div>
+              </ng-template>
               <td>{{ task.name }}</td>
               <td>{{ task.cost }}</td>
-              <td>{{ task.dueDate | date:'dd/MM/yyyy' }}</td>
+              <td>{{ task.dueDate | date: 'dd/MM/yyyy' }}</td>
               <td>
-                <i class="fa-solid fa-pen-to-square"
-                   style="cursor: pointer;"
-                   (click)="openEditTaskModal(modalUpdateTask, task.id!)">
-                </i>
-                <i class="fa-solid fa-trash" style="cursor: pointer;"
-                   (click)="deleteTask(task.id!)">
-                </i>
+                <button class="btn btn-sm btn-outline-dark me-2" [disabled]="i === 0" (click)="moveUp(i)"
+                        title="Mover para cima">
+                  <i class="fa-solid fa-caret-up"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-dark" [disabled]="i === tasks.length - 1" (click)="moveDown(i)"
+                        title="Mover para baixo">
+                  <i class="fa-solid fa-caret-down"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-dark me-2" (click)="openEditTaskModal(modalUpdateTask, task.id!)"
+                        title="Editar">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-dark" (click)="deleteTask(task.id!)" title="Excluir">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
               </td>
             </tr>
           }
@@ -33,8 +49,9 @@
       </table>
     </div>
 
-    <div class="mt-3">
-      <button class="btn btn-primary" (click)="openCreateModal(modalCreateTask)">
+    <div class="mt-1">
+      <hr>
+      <button class="btn btn-success" (click)="openCreateModal(modalCreateTask)">
         Nova Tarefa
       </button>
     </div>
@@ -129,7 +146,7 @@
         class="close"
         data-dismiss="modal"
         type="button"
-        (click)="updateModal.hide()"
+        (click)="editModal.hide()"
       >
         <span aria-hidden="true"> × </span>
       </button>
@@ -180,7 +197,7 @@
     </div>
 
     <div class="modal-footer justify-content-center">
-      <button type="button" class="btn btn-modal btn-secondary" (click)="updateModal.hide()">
+      <button type="button" class="btn btn-modal btn-secondary" (click)="editModal.hide()">
         Voltar
       </button>
       <button

@@ -7,13 +7,18 @@ export interface Task {
 }
 
 export interface CreateTaskRequest {
-  name: string;
-  cost: string;
-  dueDate: string;
+  name?: string;
+  cost?: string;
+  dueDate?: string;
 }
 
 export interface UpdateTaskRequest {
-  name: string;
-  cost: string;
-  dueDate: string;
+  name?: string;
+  cost?: string;
+  dueDate?: string;
+}
+
+export interface UpdateAllTasksOrderRequest {
+  id?: string;
+  displayOrder?: number;
 }
