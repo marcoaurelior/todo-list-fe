@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="card p-4">
+    <h1 class="text-center mb-4">Lista de Tarefas</h1>
+
+    <div>
+      <table class="table table-striped table-hover align-items-center">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Custo</th>
+          <th scope="col">Data Limite</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+          @for (task of tasks; track task.id) {
+            <tr>
+              <td>{{ task.name }}</td>
+              <td>{{ task.cost }}</td>
+              <td>{{ task.dueDate }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
