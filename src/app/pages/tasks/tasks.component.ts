@@ -1,7 +1,7 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, LOCALE_ID, OnInit, TemplateRef} from '@angular/core';
 import {CreateTaskRequest, Task, UpdateAllTasksOrderRequest, UpdateTaskRequest} from './tasks.model';
 import {TasksService} from './tasks.service';
-import {CommonModule} from '@angular/common';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {FormsModule, NgForm} from '@angular/forms';
 import {BsModalRef, BsModalService, ModalModule} from 'ngx-bootstrap/modal';
 import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
@@ -20,7 +20,7 @@ import {CdkDrag, CdkDragDrop, CdkDragPreview, CdkDropList, moveItemInArray} from
     CdkDrag,
     CdkDragPreview
   ],
-  providers: [BsModalService, provideNgxMask()],
+  providers: [BsModalService, provideNgxMask(), CurrencyPipe, {provide: LOCALE_ID, useValue: 'pt-BR'}],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css'
 })
@@ -35,17 +35,18 @@ export class TasksComponent implements OnInit {
   tasks: Task[] = [];
 
   createName!: string;
-  createCost!: string;
+  createCost!: number;
   createDueDate!: string;
 
   editId!: string;
   editName!: string;
-  editCost!: string;
+  editCost!: number;
   editDueDate!: string;
 
   constructor(
     private tasksService: TasksService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private currencyPipe: CurrencyPipe
   ) {
   }
 
@@ -193,5 +194,11 @@ export class TasksComponent implements OnInit {
           });
         }
       });
+  }
+
+  currencyToBRL(valor?: number): string {
+    const numero = Number(valor);
+
+    return this.currencyPipe.transform(numero, 'BRL', 'symbol', '1.2-2', 'pt-BR') ?? 'R$0,00';
   }
 }

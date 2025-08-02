@@ -96,3 +96,9 @@
 .cdk-drag:active {
   cursor: grabbing;
 }
+
+.table.table-striped tbody tr.yellow-line,
+.table.table-striped tbody tr.yellow-line > td {
+  background-color: #fff5d7 !important;
+  color: #000 !important;
+}

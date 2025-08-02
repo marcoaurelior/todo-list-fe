@@ -2,7 +2,7 @@
   <div class="card p-4">
     <h1 class="text-center mb-4">Lista de Tarefas</h1>
 
-    <div class="table-container" cdkDropList (cdkDropListDropped)="dragAndDrop($event)">
+    <div class="table-container" cdkDropList (cdkDropListDropped)="dragAndDrop($event)" >
       <table class="table table-striped table-hover align-items-center">
         <thead class="thead-light">
         <tr>
@@ -15,14 +15,14 @@
         </thead>
         <tbody class="list">
           @for (task of tasks; track task.id; let i = $index) {
-            <tr cdkDrag [cdkDragData]="task" class="drag-item">
+            <tr cdkDrag [cdkDragData]="task" class="drag-item" [ngClass]="{'yellow-line': task.cost! >= 1000}">
               <ng-template cdkDragPreview>
                 <div class="drag-preview">
                   {{ task.name }}
                 </div>
               </ng-template>
               <td>{{ task.name }}</td>
-              <td>{{ task.cost }}</td>
+              <td>{{ currencyToBRL(task.cost) }}</td>
               <td>{{ task.dueDate | date: 'dd/MM/yyyy' }}</td>
               <td>
                 <button class="btn btn-sm btn-outline-dark me-2" [disabled]="i === 0" (click)="moveUp(i)"
