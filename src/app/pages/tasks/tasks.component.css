@@ -102,3 +102,11 @@
   background-color: #fff5d7 !important;
   color: #000 !important;
 }
+
+.task-name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}

@@ -7,6 +7,7 @@ import {BsModalRef, BsModalService, ModalModule} from 'ngx-bootstrap/modal';
 import {NgxMaskDirective, provideNgxMask} from 'ngx-mask';
 import swal from 'sweetalert2';
 import {CdkDrag, CdkDragDrop, CdkDragPreview, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import {NotificationService} from '../../core/notification.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -46,7 +47,8 @@ export class TasksComponent implements OnInit {
   constructor(
     private tasksService: TasksService,
     private modalService: BsModalService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private notificationService: NotificationService
   ) {
   }
 
@@ -59,8 +61,13 @@ export class TasksComponent implements OnInit {
       next: (tasks: Task[]) => {
         this.tasks = tasks;
       },
-      error: (err: any) => {
-        console.error('Erro ao carregar tasks', err);
+      error: (error: any) => {
+        console.log(error)
+        this.notificationService.showNotification(
+          'danger',
+          'Erro',
+          'Houve um problema ao listar as tarefas. Tente novamente.'
+        );
       }
     });
   }
@@ -74,10 +81,20 @@ export class TasksComponent implements OnInit {
 
     this.tasksService.createTask(request).subscribe({
       next: () => {
+        this.notificationService.showNotification(
+          'success',
+          'Sucesso',
+          'Tarefa criada com sucesso.'
+        );
         this.getAllTasks();
       },
       error: (error) => {
-        console.error(error);
+        console.log(error)
+        this.notificationService.showNotification(
+          'danger',
+          'Erro',
+          'Houve um problema ao criar a tarefa. Tente novamente.'
+        );
       }
     });
     this.createModal.hide();
@@ -100,12 +117,21 @@ export class TasksComponent implements OnInit {
     }));
 
     this.tasksService.updateAllDisplayOrder(orderedTasks).subscribe({
-      next: (updatedTasks) => {
-        console.log('Ordem atualizada com sucesso', updatedTasks);
+      next: () => {
+        this.notificationService.showNotification(
+          'success',
+          'Sucesso',
+          'Ordem das tarefas atualizada com sucesso.'
+        );
         this.getAllTasks();
       },
       error: (error) => {
-        console.error('Erro ao atualizar ordem', error);
+        console.log(error)
+        this.notificationService.showNotification(
+          'danger',
+          'Erro',
+          'Houve um problema ao atualizar a ordem das tarefas. Tente novamente.'
+        );
       }
     });
   }
@@ -115,6 +141,8 @@ export class TasksComponent implements OnInit {
       const temp = this.tasks[index];
       this.tasks[index] = this.tasks[index - 1];
       this.tasks[index - 1] = temp;
+
+      this.updateOrder();
     }
   }
 
@@ -123,6 +151,8 @@ export class TasksComponent implements OnInit {
       const temp = this.tasks[index];
       this.tasks[index] = this.tasks[index + 1];
       this.tasks[index + 1] = temp;
+
+      this.updateOrder();
     }
   }
 
@@ -135,13 +165,22 @@ export class TasksComponent implements OnInit {
 
     this.tasksService.updateTask(this.editId, request).subscribe({
       next: () => {
+        this.notificationService.showNotification(
+          'success',
+          'Sucesso',
+          'Tarefa atualizada com sucesso.'
+        );
         this.getAllTasks();
       },
       error: (error) => {
         console.error(error);
+        this.notificationService.showNotification(
+          'danger',
+          'Erro',
+          'Houve um problema ao atualizar a tarefa. Tente novamente.'
+        );
       }
     });
-
     this.editModal.hide();
     updateTaskForm.resetForm();
   }
@@ -158,6 +197,11 @@ export class TasksComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
+        this.notificationService.showNotification(
+          'danger',
+          'Erro',
+          'Não foi possível carregar os dados da tarefa. Tente novamente.'
+        );
       }
     });
   }
@@ -186,10 +230,20 @@ export class TasksComponent implements OnInit {
         if (result.isConfirmed) {
           this.tasksService.deleteTask(id).subscribe({
             next: () => {
+              this.notificationService.showNotification(
+                'success',
+                'Sucesso',
+                'Tarefa removida com sucesso.'
+              );
               this.getAllTasks();
             },
             error: (error) => {
               console.error(error);
+              this.notificationService.showNotification(
+                'danger',
+                'Erro',
+                'Houve um problema ao remover a tarefa. Tente novamente.'
+              );
             }
           });
         }

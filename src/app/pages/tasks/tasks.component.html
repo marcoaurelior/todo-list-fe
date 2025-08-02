@@ -21,7 +21,7 @@
                   {{ task.name }}
                 </div>
               </ng-template>
-              <td>{{ task.name }}</td>
+              <td class="task-name" [title]="task.name">{{ task.name }}</td>
               <td>{{ currencyToBRL(task.cost) }}</td>
               <td>{{ task.dueDate | date: 'dd/MM/yyyy' }}</td>
               <td>

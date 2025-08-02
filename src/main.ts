@@ -1,9 +1,14 @@
 import {bootstrapApplication} from '@angular/platform-browser';
 import {appConfig} from './app/app.config';
 import {App} from './app/app';
-
 import {registerLocaleData} from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import {environment} from './environments/environment';
+import {enableProdMode} from '@angular/core';
+
+if (environment.production) {
+  enableProdMode();
+}
 
 registerLocaleData(localePt);
 
