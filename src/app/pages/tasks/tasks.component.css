@@ -1,0 +1,35 @@
+.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  opacity: 0.75;
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+  margin-top: 1.8rem;
+}
+
+.form-control-label {
+  margin-bottom: 0.3rem;
+}
+
+.margin-right {
+  margin-right: 10px!important; /* ajuste o valor conforme quiser */
+}

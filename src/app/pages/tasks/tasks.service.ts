@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Task} from './tasks.model';
+import {CreateTaskRequest, Task, UpdateTaskRequest} from './tasks.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,23 @@ export class TasksService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getTasks(): Observable<Task[]> {
+  getAllTasks(): Observable<Task[]> {
     return this.httpClient.get<Task[]>(this.url)
+  }
+
+  getTaskById(id: string): Observable<Task> {
+    return this.httpClient.get<Task>(this.url + '/' + id);
+  }
+
+  createTask(task: CreateTaskRequest): Observable<void> {
+    return this.httpClient.post<void>(this.url, task)
+  }
+
+  updateTask(id: string, request: UpdateTaskRequest) {
+    return this.httpClient.post(this.url + '/' + id, request);
+  }
+
+  deleteTask(id: string): Observable<void> {
+    return this.httpClient.delete<void>(this.url + '/' + id)
   }
 }
