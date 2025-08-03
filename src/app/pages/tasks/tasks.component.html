@@ -26,11 +26,11 @@
               <td>{{ task.dueDate | date: 'dd/MM/yyyy' }}</td>
               <td>
                 <button class="btn btn-sm btn-outline-dark me-2" [disabled]="i === 0" (click)="moveUp(i)"
-                        title="Mover para cima">
+                        title="Subir">
                   <i class="fa-solid fa-caret-up"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-dark" [disabled]="i === tasks.length - 1" (click)="moveDown(i)"
-                        title="Mover para baixo">
+                        title="Descer">
                   <i class="fa-solid fa-caret-down"></i>
                 </button>
               </td>
@@ -52,7 +52,7 @@
     <div class="mt-1">
       <hr>
       <button class="btn btn-success" (click)="openCreateModal(modalCreateTask)">
-        Nova Tarefa
+        Incluir
       </button>
     </div>
   </div>
@@ -86,7 +86,7 @@
 
     <div class="modal-body pt-3">
       <div class="form-group mt-0">
-        <label class="form-control-label" for="taskName">Nome</label>
+        <label class="form-control-label" for="taskName">Nome da Tarefa</label>
         <input
           id="taskName"
           name="name"
@@ -163,7 +163,7 @@
 
     <div class="modal-body pt-3">
       <div class="form-group mt-0">
-        <label class="form-control-label" for="editTaskName">Nome</label>
+        <label class="form-control-label" for="editTaskName">Nome da Tarefa</label>
         <input
           id="editTaskName"
           name="name"
