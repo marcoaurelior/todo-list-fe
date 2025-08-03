@@ -21,7 +21,7 @@ export class NotificationService {
       this.toastr.error(message, title, {
         progressBar: true,
         closeButton: true,
-        timeOut: 2300,
+        timeOut: 3000,
         progressAnimation: 'increasing',
         positionClass: 'toast-top-center'
       });
@@ -30,7 +30,7 @@ export class NotificationService {
       this.toastr.warning(message, title, {
         progressBar: true,
         closeButton: true,
-        timeOut: 2300,
+        timeOut: 2500,
         progressAnimation: 'increasing',
         positionClass: 'toast-top-center'
       });

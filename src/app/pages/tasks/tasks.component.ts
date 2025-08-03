@@ -89,12 +89,28 @@ export class TasksComponent implements OnInit {
         this.getAllTasks();
       },
       error: (error) => {
-        console.log(error)
-        this.notificationService.showNotification(
-          'danger',
-          'Erro',
-          'Houve um problema ao criar a tarefa. Tente novamente.'
-        );
+        console.error(error);
+        const message = error?.error?.clientMessage || error?.error?.message || '';
+
+        if (message.includes('Already Exists')) {
+          this.notificationService.showNotification(
+            'danger',
+            'Erro',
+            'Já existe uma tarefa com este nome.'
+          );
+        } else if (message.includes('Invalid due date'))
+          this.notificationService.showNotification(
+            'danger',
+            'Erro',
+            'Não é possível definir uma data limite no passado.'
+          );
+        else {
+          this.notificationService.showNotification(
+            'danger',
+            'Erro',
+            'Houve um problema ao criar a tarefa. Tente novamente.'
+          );
+        }
       }
     });
     this.createModal.hide();
@@ -174,11 +190,27 @@ export class TasksComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.notificationService.showNotification(
-          'danger',
-          'Erro',
-          'Houve um problema ao atualizar a tarefa. Tente novamente.'
-        );
+        const message = error?.error?.clientMessage || error?.error?.message || '';
+
+        if (message.includes('Already Exists')) {
+          this.notificationService.showNotification(
+            'danger',
+            'Erro',
+            'Já existe uma tarefa com este nome.'
+          );
+        } else if (message.includes('Invalid due date'))
+          this.notificationService.showNotification(
+            'danger',
+            'Erro',
+            'Não é possível definir uma data limite no passado.'
+          );
+        else {
+          this.notificationService.showNotification(
+            'danger',
+            'Erro',
+            'Houve um problema ao atualizar a tarefa. Tente novamente.'
+          );
+        }
       }
     });
     this.editModal.hide();
