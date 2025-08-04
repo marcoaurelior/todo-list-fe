@@ -15,7 +15,6 @@ Para executar esse projeto, você precisa ter as seguintes ferramentas pré-inst
 * Node.js (versão 22.16.0)
 * npm (versão 10.9.2)
 * Angular CLI (versão 20.1.4)
-* IntelliJ IDEA
 * Git
 
 ## Como executar
@@ -31,10 +30,6 @@ Para executar esse projeto, você precisa ter as seguintes ferramentas pré-inst
 3 - Execute o servidor de desenvolvimento:
 
     ng serve
-
-4 - Se desejar pular os testes, utilize:
-
-    mvn clean install -DskipTests
 
 4 - Acesse a aplicação no navegador pelo endereço:
 
