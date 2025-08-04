@@ -17,6 +17,7 @@ Para executar esse projeto, você precisa ter as seguintes ferramentas pré-inst
 * Angular CLI (versão 20.1.4)
 * TypeScript: A linguagem de programação usada no projeto.
 * IntelliJ IDEA
+* Git
 
 ## Como executar
 
