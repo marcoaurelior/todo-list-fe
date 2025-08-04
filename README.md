@@ -15,7 +15,6 @@ Para executar esse projeto, você precisa ter as seguintes ferramentas pré-inst
 * Node.js (versão 22.16.0)
 * npm (versão 10.9.2)
 * Angular CLI (versão 20.1.4)
-* TypeScript: A linguagem de programação usada no projeto.
 * IntelliJ IDEA
 * Git
 
